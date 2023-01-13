@@ -2,13 +2,15 @@ const { Schema, model, default: mongoose } = require('mongoose')
 
 
 const ThoughtSchema = new Schema({
-    firstName: {
+    thoughtText: {
         type: String,
-        required: "first name is required",
-        unique: true,
-        trim: true,
-    },})
- 
+        required: "A thought is required",
+        maxlength: 280
+    },
+}, {
+    timestamps: true
+})
+
 
 const Thought = mongoose.model('Thought', ThoughtSchema)
 
