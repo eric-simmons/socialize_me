@@ -1,14 +1,16 @@
-const { ObjectId } = require('mongoose').Types
-const { User, Thought, Reaction } = require('../models')
+
+const { User } = require('../models')
 
 module.exports = {
 
     createUser: async function (req, res) {
+        console.log(req.body)
         try {
             const newUser = await User.create(req.body)
             res.json(newUser)
         }
         catch (error) {
+            console.log(error)
             res.status(500).json(error)
         }
     },
@@ -56,5 +58,5 @@ module.exports = {
             res.status(500).json(error)
         }
     },
-//delete assocaited thoughts when user is deleted
+    //delete associated thoughts when user is deleted
 }

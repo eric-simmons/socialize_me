@@ -1,4 +1,4 @@
-const { Schema, model, default: mongoose } = require('mongoose')
+const { Schema, mongoose } = require('mongoose')
 
 
 const UserSchema = new Schema({
@@ -10,7 +10,7 @@ const UserSchema = new Schema({
     },
     lastName: {
         type: String,
-        required: "first name is required",
+        required: "last name is required",
         unique: true,
         trim: true,
     },
@@ -22,39 +22,42 @@ const UserSchema = new Schema({
         validateEmail: true,
         match: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Please use a valid Email']
     },
-    thoughts: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Thought',
-            trim: true,
-        }
-    ],
-    friends: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-        }
-    ],
+    // thoughts: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'Thought',
+    //         trim: true,
+    //     }
+    // ],
+    // friends: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'User',
+    //     }
+    // ],
 },
     //whenever i convert documents to JSON i want all virtual fields included
     {
         toJSON: {
             virtuals: true
-        }
+        }, 
+        timestamps: true
     })
+
+
 UserSchema.virtual('friendCount')
     .get(function() {
         return this.friends.length
     })
 
-UserSchema.virtual('fullName')
-    .get(function () {
-        return `${this.firstName} ${this.lastName}`
-    })
-    .set(function (value) {
-        const [firstName, lastName] = value.split(' ')
-        this.set({ firstName, lastName })
-    })
+// UserSchema.virtual('fullName')
+//     .get(function () {
+//         return `${this.firstName} ${this.lastName}`
+//     })
+//     .set(function (value) {
+//         const [firstName, lastName] = value.split(' ')
+//         this.set({ firstName, lastName })
+//     })
 
 
 
