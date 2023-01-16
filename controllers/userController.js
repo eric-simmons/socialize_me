@@ -30,7 +30,7 @@ module.exports = {
         //_id
         try {
             const user = await User.findById(
-                { _id: req.params.id })
+                req.params.id)
             res.json(user)
         }
         catch (error) {
@@ -41,7 +41,8 @@ module.exports = {
     updateUser: async function (req, res) {
         try {
             const updatedUser = await User.findByIdAndUpdate(
-                { _id: req.params.userId },
+                req.params.id,
+                req.body,
                 { new: true })
             res.json(updatedUser)
         }
@@ -52,7 +53,7 @@ module.exports = {
     deleteUser: async function (req, res) {
         try {
             const deletedUser = await User.findByIdAndDelete(
-                { _id: req.params.userId },
+                { _id: req.params.id },
                 { new: true })
             res.json(deletedUser)
         }
