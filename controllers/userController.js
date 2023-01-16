@@ -18,6 +18,7 @@ module.exports = {
     getUsers: async function (req, res) {
         try {
             const user = await User.find()
+            // .populate('Thought')
             res.json(user)
         }
         catch (error) {
@@ -26,13 +27,14 @@ module.exports = {
     },
 
     getUser: async function (req, res) {
+        //_id
         try {
-            const user = await User.findOne(
-                { _id: req.params.userId },
-                { new: true })
+            const user = await User.findById(
+                { _id: req.params.id })
             res.json(user)
         }
         catch (error) {
+            console.log(error)
             res.status(500).json(error)
         }
     },
