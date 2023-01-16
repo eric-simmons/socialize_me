@@ -2,16 +2,20 @@ const { Schema, mongoose } = require('mongoose')
 
 
 const UserSchema = new Schema({
+    userName: {
+        type: String,
+        required: "username is required",
+        unique: true,
+        trim: true
+    },
     firstName: {
         type: String,
         required: "first name is required",
-        unique: true,
         trim: true,
     },
     lastName: {
         type: String,
         required: "last name is required",
-        unique: true,
         trim: true,
     },
     email: {
@@ -43,7 +47,6 @@ const UserSchema = new Schema({
         }, 
         timestamps: true
     })
-
 
 UserSchema.virtual('friendCount')
     .get(function() {

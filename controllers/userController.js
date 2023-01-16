@@ -1,16 +1,15 @@
 
-const { User } = require('../models')
+const { User, Thought } = require('../models')
+
 
 module.exports = {
 
     createUser: async function (req, res) {
-        console.log(req.body)
         try {
             const newUser = await User.create(req.body)
             res.json(newUser)
         }
         catch (error) {
-            console.log(error)
             res.status(500).json(error)
         }
     },
@@ -18,7 +17,8 @@ module.exports = {
     getUsers: async function (req, res) {
         try {
             const user = await User.find()
-            // .populate('Thought')
+            .populate('thoughts')
+            .populate('friends')
             res.json(user)
         }
         catch (error) {
@@ -27,7 +27,6 @@ module.exports = {
     },
 
     getUser: async function (req, res) {
-        //_id
         try {
             const user = await User.findById(
                 req.params.id)
@@ -52,8 +51,15 @@ module.exports = {
     },
     deleteUser: async function (req, res) {
         try {
+            //first find user by id delete all the thoughts assoiciated with them
+            // const user = await User.findById(req.params.id)
+            // //second delete all the thoughts assoiciated with them
+            // await Thoughts.deleteMany({
+            //     _id: { $in: user.thoughts }
+            // })
+            //lastly delete the user
             const deletedUser = await User.findByIdAndDelete(
-                { _id: req.params.id },
+                req.params.id,
                 { new: true })
             res.json(deletedUser)
         }
@@ -61,5 +67,31 @@ module.exports = {
             res.status(500).json(error)
         }
     },
-    //delete associated thoughts when user is deleted
+    addFriend: async function (req, res) {
+        try {
+            
+            //find user whos friends list to update
+            const updatedUser = await User.findByIdAndUpdate(
+                req.params.id,
+                { $addToSet: { friend: req.body.friend } },
+                { new: true })
+                console.log(updatedUser)
+            res.json(updatedUser)
+        }
+        catch (error) {
+            res.status(500).json(error)
+        }
+    },
+    deleteFriend: async function (req, res) {
+        try {
+            const updatedUser = await User.findByIdAndUpdate(
+                req.params.id,
+                { $pull: { friends: { $eq: req.body.friend } } },
+                { new: true })
+            res.json(updatedUser)
+        }
+        catch (error) {
+            res.status(500).json(error)
+        }
+    }
 }
