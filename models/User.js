@@ -1,5 +1,5 @@
 const { Schema, mongoose } = require('mongoose')
-
+const { DateTime } = require("luxon")
 
 const UserSchema = new Schema({
     userName: {
@@ -64,20 +64,14 @@ UserSchema.virtual('fullName')
 
 UserSchema.virtual('formatDate')
 .get(function(){
-    return this.timestamps
+    //stringify createdAt object, them remove double quotes, format with luxon
+   let timestamp = JSON.stringify(this.createdAt)
+    timestamp= timestamp.replace(/['"]+/g, '')
+    return DateTime.fromISO(timestamp).toFormat('ff')
 })
 
 
 
-
-
-// UserSchema.methods.validateEmail = async (email) => {
-//     return String(email)
-//         .toLowerCase()
-//         .match(
-//             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-//         )
-// }
 
 const User = mongoose.model('User', UserSchema)
 

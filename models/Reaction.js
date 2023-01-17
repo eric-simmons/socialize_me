@@ -6,10 +6,15 @@ const ReactionSchema = new Schema({
         required: "Reaction Required",
         maxlength: 280
     },
-    username: {
-        type: String, 
-        required: "User required for reaction"
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    thoughtId: {
+        type: Schema.Types.ObjectId, 
+        ref: 'Thought'
     }
+
 }, {
     toJSON: {
         virtuals: true

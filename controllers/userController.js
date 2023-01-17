@@ -52,11 +52,11 @@ module.exports = {
     deleteUser: async function (req, res) {
         try {
             //first find user by id delete all the thoughts assoiciated with them
-            // const user = await User.findById(req.params.id)
-            // //second delete all the thoughts assoiciated with them
-            // await Thoughts.deleteMany({
-            //     _id: { $in: user.thoughts }
-            // })
+            const user = await User.findById(req.params.id)
+            //second delete all the thoughts assoiciated with them
+            await Thought.deleteMany({
+                _id: { $in: user.thoughts }
+            })
             //lastly delete the user
             const deletedUser = await User.findByIdAndDelete(
                 req.params.id,
