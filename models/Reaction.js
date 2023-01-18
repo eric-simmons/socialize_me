@@ -1,4 +1,5 @@
 const {Schema} = require('mongoose')
+const formatDate = require('../utils/formatDate')
 
 const ReactionSchema = new Schema({
     reactionBody: {
@@ -21,5 +22,8 @@ const ReactionSchema = new Schema({
     }, 
     timestamps: true
 })
+
+
+ReactionSchema.virtual('formatDate').get(formatDate)
 
 module.exports = ReactionSchema

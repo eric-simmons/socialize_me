@@ -1,4 +1,6 @@
 const { Schema, mongoose } = require('mongoose')
+const formatDate = require('../utils/formatDate')
+
 const { DateTime } = require("luxon")
 
 const UserSchema = new Schema({
@@ -62,16 +64,17 @@ UserSchema.virtual('fullName')
         this.set({ firstName, lastName })
     })
 
-UserSchema.virtual('formatDate')
-.get(function(){
-    //stringify createdAt object, them remove double quotes, format with luxon
-   let timestamp = JSON.stringify(this.createdAt)
-    timestamp= timestamp.replace(/['"]+/g, '')
-    return DateTime.fromISO(timestamp).toFormat('ff')
-})
+
+UserSchema.virtual('formatDate').get(formatDate)
 
 
-
+// UserSchema.virtual('formatDate')
+// .get(function(){
+//     //stringify createdAt object, them remove double quotes, format with luxon
+//    let timestamp = JSON.stringify(this.createdAt)
+//     timestamp= timestamp.replace(/['"]+/g, '')
+//     return DateTime.fromISO(timestamp).toFormat('ff')
+// })
 
 const User = mongoose.model('User', UserSchema)
 
