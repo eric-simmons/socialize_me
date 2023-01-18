@@ -10,7 +10,7 @@ module.exports = {
             const newThought = await Thought.create(req.body)
             await User.findByIdAndUpdate(
                 { _id: req.body.userId },
-                { $push: { thoughts: newThought.id} }
+                { $push: { thoughts: newThought.id } }
             )
             res.json(newThought)
         }
@@ -58,7 +58,7 @@ module.exports = {
             // const thought = await Thought.findById(req.params.id)
             // //second delete all the thoughts assoiciated with them
             // await Reaction.deleteMany({
-            //     _id: { $in: thought.reaction }
+            //     _id: { $in: thought.reactions }
             // })
             // lastly delete the thought
             const deletedThought = await Thought.findByIdAndDelete(
@@ -72,11 +72,11 @@ module.exports = {
     },
     //create reaction stored in a single thoughts reactions array
     addReaction: async function (req, res) {
-        try { 
+        try {
             const reaction = await Thought.findByIdAndUpdate(
-                {_id: req.params.id},
-                {$push: {reaction: req.body}},
-                {new: true}
+                { _id: req.params.id },
+                { $push: { reactions: req.body } },
+                { new: true }
             )
             res.json(reaction)
         }
@@ -85,7 +85,12 @@ module.exports = {
         }
     },
     deleteReaction: async function (req, res) {
-        try { }
+        try {
+            const deletedReaction = await Reaction.findByIdAndDelete(
+                req.params.id,
+                { new: true })
+            res.json(deletedReaction)
+        }
         catch (error) {
             res.status(500).json(error)
         }
