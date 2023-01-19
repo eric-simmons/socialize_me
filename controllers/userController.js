@@ -73,9 +73,8 @@ module.exports = {
             //find user whos friends list to update
             const updatedUser = await User.findByIdAndUpdate(
                 req.params.id,
-                { $addToSet: { friend: req.body.friend } },
+                { $addToSet: { friends: req.body.friend } },
                 { new: true })
-                console.log(updatedUser)
             res.json(updatedUser)
         }
         catch (error) {
